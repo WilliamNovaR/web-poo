@@ -11,4 +11,3 @@ class Criterio:
         self.identificador = identificador
         self.descripcion = descripcion
         self.porcentaje_ponderacion = porcentaje_ponderacion
-

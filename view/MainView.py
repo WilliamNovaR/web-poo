@@ -8,11 +8,9 @@ from view.AboutPartial import consultar_instrucciones
 from view.Evaluar import listar_evaluacion, agregar_evaluacion
 from view.ConfigurarCriterios import seleccionar_opcion
 from view.CrearActa import crearActa
-from view.InicializarActa import  agregar_datos
+from view.InicializarActa import agregar_datos
 from view.InformacionActas import listar_actas
 from view.AnaliticaDatos import analisis
-
-
 
 
 class MainView:
@@ -41,24 +39,31 @@ class MainView:
         self._dibujar_layout()
 
     def _dibujar_layout(self):
-        img = Image.open( "C:\\Users\\willi\\Downloads\\streamlit_example_app-main\\streamlit_example_app-main\\view\\puj_logo_vertical_azul_copia.png" )
+        img = Image.open(
+            "C:\\Users\\willi\\Downloads\\streamlit_example_app-main\\streamlit_example_app-main\\view"
+            "\\puj_logo_vertical_azul_copia.png")
         # Set page title, icon, layout wide (more used space in central area) and sidebar initial state
-        st.set_page_config  (page_title="Calificar trabajos finales", page_icon = img, layout="wide",
+        st.set_page_config(page_title="Calificar trabajos finales", page_icon=img, layout="wide",
                            initial_sidebar_state="expanded")
         # Defines the number of available columns del area principal
-        self.col1, self.col2, self.col3, self.col4, self.col5, self.col6, self.col7, self.col8 = st.columns([1, 1, 1, 1, 1, 1, 1, 1])
+        self.col1, self.col2, self.col3, self.col4, self.col5, self.col6, self.col7, self.col8 = st.columns(
+            [1, 1, 1, 1, 1, 1, 1, 1])
 
         # Define lo que abrá en la barra de menu
         with st.sidebar:
-            self.menu_actual = option_menu("Menu", ["About", 'Inicilizar datos actas' , 'Criterios', 'Evaluar nuevo trabajo', 'Calificaciones', 'Acta', 'Resumen actas', 'Estadisticas'],
-                                           icons=['house', 'upload' , 'list-check', 'clipboard', 'clipboard-check', 'file-pdf', 'book', 'file-bar-graph'], menu_icon="cast", default_index=1)
+            self.menu_actual = option_menu("Menu",
+                                           ["About", 'Inicilizar datos actas', 'Criterios', 'Evaluar nuevo trabajo',
+                                            'Calificaciones', 'Acta', 'Resumen actas', 'Estadisticas'],
+                                           icons=['house', 'upload', 'list-check', 'clipboard', 'clipboard-check',
+                                                  'file-pdf', 'book', 'file-bar-graph'], menu_icon="cast",
+                                           default_index=1)
 
     def controlar_menu(self):
         if self.menu_actual == "About":
             texto = consultar_instrucciones()
             st.write(texto)
         elif self.menu_actual == "Inicilizar datos actas":
-            agregar_datos(st, self.controller, self.criterios_controller)
+            agregar_datos(st, self.controller)
         elif self.menu_actual == "Criterios":
             seleccionar_opcion(st, self.criterios_controller)
         elif self.menu_actual == "Evaluar nuevo trabajo":
@@ -68,11 +73,9 @@ class MainView:
         elif self.menu_actual == "Acta":
             crearActa(st, self.actas_controller, self.controller)
         elif self.menu_actual == "Resumen actas":
-            listar_actas( st, self.criterios_controller, self.actas_controller )
-        elif self.menu_actual == 'Estadisticas' :
-            analisis( st, self.controller, self.criterios_controller )
-
-
+            listar_actas(st, self.criterios_controller, self.actas_controller)
+        elif self.menu_actual == 'Estadisticas':
+            analisis(st, self.controller, self.criterios_controller)
 
 
 # Main call
