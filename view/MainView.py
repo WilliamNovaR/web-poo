@@ -51,7 +51,7 @@ class MainView:
         # Define lo que abrá en la barra de menu
         with st.sidebar:
             self.menu_actual = option_menu("Menu", ["About", 'Inicilizar datos actas' , 'Criterios', 'Evaluar nuevo trabajo', 'Calificaciones', 'Acta', 'Resumen actas', 'Estadisticas'],
-                                           icons=['house', 'house' , 'card-list', 'clipboard', 'clipboard-check'], menu_icon="cast", default_index=1)
+                                           icons=['house', 'upload' , 'list-check', 'clipboard', 'clipboard-check', 'file-pdf', 'book', 'file-bar-graph'], menu_icon="cast", default_index=1)
 
     def controlar_menu(self):
         if self.menu_actual == "About":
