@@ -8,9 +8,9 @@ from view.AboutPartial import consultar_instrucciones
 from view.Evaluar import listar_evaluacion, agregar_evaluacion
 from view.ConfigurarCriterios import seleccionar_opcion
 from view.CrearActa import crearActa
-from view.InicilizarActa import  agregar_datos
+from view.InicializarActa import  agregar_datos
 from view.InformacionActas import listar_actas
-from view.AnliticaDato import analisis
+from view.AnaliticaDatos import analisis
 
 
 
