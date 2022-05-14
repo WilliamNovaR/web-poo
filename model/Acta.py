@@ -2,6 +2,7 @@ from fpdf import FPDF
 
 
 class PDF(FPDF):
+    #variables para guardar los datos individuales de cada acta y generar el pdf
     inicializar = ''
     nombre_pdf = ''
     fecha = ''
@@ -27,6 +28,7 @@ class PDF(FPDF):
     comentario_final = ''
     correcciones = ''
     recomendacion = ''
+    #funcion que crea el encabezado del pdf
     def header(self):
         self.image( "C:\\Users\\willi\\Downloads\\streamlit_example_app-main\\streamlit_example_app-main\\model\\img.png", 10, 8, 33 )
         self.set_font('helvetica', 'B', 20)
@@ -36,6 +38,7 @@ class PDF(FPDF):
         self.cell(1, -5, 'ACTA: ' + self.num_acta, border=False, ln=0, align='L')
         self.cell(0, -5, 'Fecha: ' + self.fecha , border=False, ln=1, align='R')
         self.ln(20)
+    #funcion que imprime en el acta los datos inicializados por el asistente
     def datos(self):
         self.set_font('helvetica', 'B', 15)
         self.cell(0, 13, 'ACTA DE EVALUACIÓN DE TRABAJO DE GRADO', border=False, ln=1, align='C')
@@ -60,10 +63,10 @@ class PDF(FPDF):
         self.cell(10, 10, txt=self.jurado1, border=False, ln=1, align="L")
         self.cell(25, 10, 'Jurado2: ', border=False, ln=0, align="L")
         self.cell(10, 10, txt=self.jurado2, border=False, ln=1, align="L")
-
+    #funcion creada para imprimir en el acta una texto importante
     def extra(self):
         self.multi_cell(0, 5, 'En atención al desarrollo de este Trabajo de Grado y al documento y sustentación que presentó el(la) autor(a), los Jurados damos las siguientes calificaciones parciales y observaciones (los criterios a evaluar y sus ponderaciones se estipulan en el artículo 7.1 de las Directrices para Trabajo de Grado de Maestría):', border=False, align='l')
-
+    #funcion que imprime la evaluacion de los jurados de cada criterio
     def criterio(self):
         self.set_font('helvetica', 'B', 12)
         self.cell(5, 10, txt = self.num_criterio, border=False, ln=0, align="L")
@@ -74,12 +77,13 @@ class PDF(FPDF):
         self.cell(10, 10, txt=self.ponderacion, border=False, ln=1, align="R")
         self.multi_cell(0, 15, txt=self.observacion, border=False, align='L')
         self.multi_cell(0, 10, '____________________________________________________________________________________________________________________________________________________________________', border=False, align='l')
-
+    #funcion que imprime las calificaciones finales del jrado
     def nota_final(self):
         self.set_font('helvetica', 'B', 12)
         self.multi_cell(0, 10, 'Como resutado de estas calificaciones parciales y sus ponderaciones, la calificacion del trabajo de grado es: ' + self.calificacion_final, border=False, align="L")
         self.cell(54, 10, '', border=False, ln=0, align="L")
         self.cell(70, 5, txt= self.calificacion_final, border=False, ln=0, align="L")
+        #esta parte sirve para dar el numero de la nota en letras
         entero = float(self.calificacion_final) // 1.0
         decima = round(float(self.calificacion_final) - entero, 1)
         if entero == 0:
@@ -127,6 +131,7 @@ class PDF(FPDF):
         self.cell(1, 8, '', border=False, ln=0, align="L")
         self.multi_cell(0, 6,'___________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________', border=False, align='L')
 
+    #la funcion crea la plantilla de las firmas
     def firmas(self):
         self.cell(40, 40, '', border=False, ln=0, align="L")
         self.set_font('helvetica', '', 12)
@@ -136,6 +141,7 @@ class PDF(FPDF):
         self.cell(65, 13, 'Firma jurado 1', border=False, ln=0, align="L")
         self.cell(1, 13, 'Firma jurado 2', border=False, ln=0, align="L")
 
+    #esta funcion imprime los datos que se muestran en caso que la nota final del trabajo sea mayor a 4.5
     def extra(self):
         self.set_font('helvetica', '', 12)
         self.cell(1, 5, '', border=False, ln=1, align="L")

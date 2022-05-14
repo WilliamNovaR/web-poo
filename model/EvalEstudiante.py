@@ -1,5 +1,6 @@
 import json
 
+#clase creada para guardar datos para el acta
 
 class EvaluacionEstudiante:
 

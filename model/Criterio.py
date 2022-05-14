@@ -1,7 +1,8 @@
 
+#clase creada para generar los criterios de evaluacion
 
 class Criterio:
-
+    #constructores
     def __int__(self) -> None:
         self.identificador = ""
         self.descripcion = ""

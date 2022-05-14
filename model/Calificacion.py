@@ -1,4 +1,4 @@
-
+#clase creada para almacenar las calificaciones de cada uno de los criterios a evaluar
 
 class Calificacion:
 
