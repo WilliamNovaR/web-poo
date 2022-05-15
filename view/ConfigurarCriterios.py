@@ -53,6 +53,7 @@ def editar_criterio(st, criterios_controller):
             if st.button("Editar"):
                 st.success("Edicion exitosa")
 
+#Elimina el criterio seleccionado
 def eliminar_criterio(st, criterios_controller):
     lista_criterios = []
     index = 0 #en esta variable se guarda el index del criterio que vamos a eliminar
