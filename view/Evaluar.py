@@ -15,7 +15,7 @@ def agregar_evaluacion(st, controller, criterios_controller):
     seleccion_estudiante = st.selectbox("Calificar a:", lista_nombres)
     for evaluacion_obj in controller.evaluaciones:
         if evaluacion_obj.nombre_autor == seleccion_estudiante:
-            lista_calificaciones = [] #se va a usar este arreglo para guardar la informacion
+            lista_calificaciones = [] #se va a usar este arreglo para guardar la informacion """pendiente"""
             criterios = []
             for i in range(len(criterios_controller.criterios)):
                 criterios.append(criterios_controller.criterios[i].identificador)
@@ -39,6 +39,7 @@ def agregar_evaluacion(st, controller, criterios_controller):
             for j in range(len(lista_calificaciones)):
                 evaluacion_obj.nota = (lista_calificaciones[j].nota_final * lista_calificaciones[
                     j].ponderacion) + evaluacion_obj.nota
+            evaluacion_obj.nota = round(evaluacion_obj.nota, 1)
             evaluacion_obj.comentario_final = st.text_input("Comentario Final:")
             evaluacion_obj.correciones = st.text_input("Correciones: ")
             if evaluacion_obj.nota >= 4.5:
@@ -129,12 +130,12 @@ def listar_evaluacion(st, controller, criterios_controller):
                 seleccionar_criterio = st.selectbox("Escoger criterio", criterios) #crea select box para seleccionar criterio a esditar
                 for i in evaluacion.calificacion:
                     if seleccionar_criterio == i.id_criterio: #busca el criterio a seleccionar
-                        evaluacion.nota -= (((i.nota_jurado1 + i.nota_jurado2) / 2) * i.ponderacion) #debido a que la info se actuliza constantemente para editar errores cada vez que se actualiza la nota se le resta la inicial para que esta no se sume con la nueva que van a poner
+                        evaluacion.nota -= (i.nota_final * i.ponderacion) #debido a que la info se actuliza constantemente para editar errores cada vez que se actualiza la nota se le resta la inicial para que esta no se sume con la nueva que van a poner
                         #imprime mas datos de la calificacion y acta
                         i.nota_jurado1 = st.number_input("Nota jurado 1: ", value=i.nota_jurado1)
                         i.nota_jurado2 = st.number_input("Nota jurado 2: ", value=i.nota_jurado2)
                         i.comentario = st.text_input("Comentario ", value=i.comentario)
-                        i.nota_final = (i.nota_jurado1 + i.nota_jurado2)
+                        i.nota_final = (i.nota_jurado1 + i.nota_jurado2) / i.numero_jurados
                         evaluacion.nota += (i.nota_final * i.ponderacion) # se agrega la nueva nota
                 evaluacion.comentario_final = st.text_input("Comentario final", value=evaluacion.comentario_final)
                 if evaluacion.nota >= 4.5: #mira si debe desplegar la opcion de los trabjos con nota mayor a 4.5
@@ -142,4 +143,5 @@ def listar_evaluacion(st, controller, criterios_controller):
                                                              value=evaluacion.recomendacion)
                 enviar_btn = st.button("Editar")
                 if enviar_btn:
+                    evaluacion.nota = round(evaluacion.nota, 1)
                     st.success("Cambio realizado")

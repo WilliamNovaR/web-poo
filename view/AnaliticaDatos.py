@@ -24,7 +24,7 @@ def analisis(st, controller, criterio_controler):
             st.subheader("Nota: " + str(round(mejor_calificacion.nota, 1)))
         else:
             st.error("No han calificado a nadie")
-    elif opcion == 'notas estudiantes':
+    elif opcion == 'Estadisticas notas':
         for i in controller.evaluaciones:
             #revisa que los nombres que se van a agregar a la grafica ya esten calificados y no solo inicilizados
             if len(i.calificacion) > 0:
