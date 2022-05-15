@@ -1,5 +1,6 @@
 import streamlit as st
 from PIL import Image
+from streamlit import config
 from streamlit_option_menu import option_menu
 from controller.EvalController import EvaluadorController
 from controller.CriterioController import CriterioController
