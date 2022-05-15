@@ -10,7 +10,7 @@ from view.ConfigurarCriterios import seleccionar_opcion
 from view.CrearActa import crearActa
 from view.InicializarActa import agregar_datos
 from view.InformacionActas import listar_actas
-from view.AnaliticaDatos import analisis
+from view.AnaliticaDatos import escoger_analis
 
 
 class MainView:
@@ -75,7 +75,7 @@ class MainView:
         elif self.menu_actual == "Resumen actas":
             listar_actas(st, self.criterios_controller, self.actas_controller)
         elif self.menu_actual == 'Estadisticas':
-            analisis(st, self.controller, self.criterios_controller)
+            escoger_analis(st, self.controller, self.criterios_controller)
 
 
 # Main call
