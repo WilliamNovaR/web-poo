@@ -5,7 +5,7 @@ from controller.EvalController import EvaluadorController
 from controller.CriterioController import CriterioController
 from controller.ActaController import ActaController
 from view.AboutPartial import consultar_instrucciones
-from view.Evaluar import listar_evaluacion, agregar_evaluacion
+from view.Evaluar import seleccion, agregar_evaluacion
 from view.ConfigurarCriterios import seleccionar_opcion
 from view.CrearActa import crearActa
 from view.InicializarActa import agregar_datos
@@ -69,7 +69,7 @@ class MainView:
         elif self.menu_actual == "Evaluar nuevo trabajo":
             agregar_evaluacion(st, self.controller, self.criterios_controller)
         elif self.menu_actual == "Calificaciones":
-            listar_evaluacion(st, self.controller, self.criterios_controller)
+            seleccion(st, self.controller, self.criterios_controller)
         elif self.menu_actual == "Acta":
             crearActa(st, self.actas_controller, self.controller)
         elif self.menu_actual == "Resumen actas":
