@@ -1,5 +1,9 @@
 from model.EvalEstudiante import EvaluacionEstudiante
 from datetime import datetime
+import matplotlib.font_manager as fm
+
+
+
 
 #inicializa la acta
 def agregar_datos(st, controller):

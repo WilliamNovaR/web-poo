@@ -6,9 +6,9 @@ class EvaluacionEstudiante:
 
     def __init__(self) -> None:
         super().__init__()
-        self.calificacion = []
 
         # Datos de toda evaluacion
+        self.calificacion = []
         self.id_estudiante = ""
         self.periodo = ''
         self.nombre_autor = ""

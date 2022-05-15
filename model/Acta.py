@@ -3,6 +3,7 @@ from fpdf import FPDF
 
 class PDF(FPDF):
     #variables para guardar los datos individuales de cada acta y generar el pdf
+    fuente = ''
     inicializar = ''
     nombre_pdf = ''
     fecha = ''
@@ -31,18 +32,18 @@ class PDF(FPDF):
     #funcion que crea el encabezado del pdf
     def header(self):
         self.image( "C:\\Users\\willi\\Downloads\\streamlit_example_app-main\\streamlit_example_app-main\\model\\img.png", 10, 8, 33 )
-        self.set_font('helvetica', 'B', 20)
+        self.set_font(family= self.fuente, size= 20, style= 'B' )
         self.cell(0, 3, 'Facultad de ingenieria', border=False, ln=1, align= 'C' )
         self.cell(0, 15, 'Maestria en ingenieria', border=False, ln=1, align='C')
-        self.set_font('helvetica', 'B', 13)
+        self.set_font( family = self.fuente, style = 'B', size= 13)
         self.cell(1, -5, 'ACTA: ' + self.num_acta, border=False, ln=0, align='L')
         self.cell(0, -5, 'Fecha: ' + self.fecha , border=False, ln=1, align='R')
         self.ln(20)
     #funcion que imprime en el acta los datos inicializados por el asistente
     def datos(self):
-        self.set_font('helvetica', 'B', 15)
+        self.set_font( family = self.fuente, style = 'B', size= 15)
         self.cell(0, 13, 'ACTA DE EVALUACIÓN DE TRABAJO DE GRADO', border=False, ln=1, align='C')
-        self.set_font('helvetica', '', 12)
+        self.set_font( family = self.fuente, style = '', size= 12)
         self.multi_cell(0, 6, txt = self.titulo , border=False, align='l')
         self.cell( 25, 10, 'Autor: ', border=False, ln = 0, align= "L" )
         self.cell(50, 10, txt = self.autor , border=False, ln=0, align="L")
@@ -68,10 +69,10 @@ class PDF(FPDF):
         self.multi_cell(0, 5, 'En atención al desarrollo de este Trabajo de Grado y al documento y sustentación que presentó el(la) autor(a), los Jurados damos las siguientes calificaciones parciales y observaciones (los criterios a evaluar y sus ponderaciones se estipulan en el artículo 7.1 de las Directrices para Trabajo de Grado de Maestría):', border=False, align='l')
     #funcion que imprime la evaluacion de los jurados de cada criterio
     def criterio(self):
-        self.set_font('helvetica', 'B', 12)
+        self.set_font( family = self.fuente, style = 'B', size= 12)
         self.cell(5, 10, txt = self.num_criterio, border=False, ln=0, align="L")
         self.cell(10, 10, txt=self.nombre_criterio, border=False, ln=1, align="L")
-        self.set_font('helvetica', '', 12)
+        self.set_font( family = self.fuente, style = '', size= 12)
         self.cell(38, 10, 'Calificacion parcial: ', border=False, ln=0, align="L")
         self.cell(145, 10, txt=self.calificacion, border=False, ln=0, align="L")
         self.cell(10, 10, txt=self.ponderacion, border=False, ln=1, align="R")
@@ -79,7 +80,7 @@ class PDF(FPDF):
         self.multi_cell(0, 10, '____________________________________________________________________________________________________________________________________________________________________', border=False, align='l')
     #funcion que imprime las calificaciones finales del jrado
     def nota_final(self):
-        self.set_font('helvetica', 'B', 12)
+        self.set_font( family = self.fuente, style = 'B', size= 12)
         self.multi_cell(0, 10, 'Como resutado de estas calificaciones parciales y sus ponderaciones, la calificacion del trabajo de grado es: ' + self.calificacion_final, border=False, align="L")
         self.cell(54, 10, '', border=False, ln=0, align="L")
         self.cell(70, 5, txt= self.calificacion_final, border=False, ln=0, align="L")
@@ -122,7 +123,7 @@ class PDF(FPDF):
         self.cell(49, 10, '', border=False, ln=0, align="L")
         self.cell(86, 5, 'Número' , border=False, ln=0, align="L")
         self.cell(70, 10, 'Letra', border=False, ln=1, align="L")
-        self.set_font('helvetica', '', 12)
+        self.set_font( family = self.fuente, style = '', size= 12)
         self.multi_cell( 0, 6, txt = self.comentario_final, border=False, align='L' )
         self.cell(1, 8, '', border=False, ln=0, align="L")
         self.multi_cell(0, 6, '___________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________' , border=False, align='L')
@@ -134,7 +135,7 @@ class PDF(FPDF):
     #la funcion crea la plantilla de las firmas
     def firmas(self):
         self.cell(40, 40, '', border=False, ln=0, align="L")
-        self.set_font('helvetica', '', 12)
+        self.set_font(  family = self.fuente, style = '', size = 12)
         self.cell(65, 13, '________________________', border=False, ln=0, align="L")
         self.cell(1, 13, '________________________', border=False, ln=1, align="L")
         self.cell(55, 25, '', border=False, ln=0, align="L")
@@ -143,7 +144,7 @@ class PDF(FPDF):
 
     #esta funcion imprime los datos que se muestran en caso que la nota final del trabajo sea mayor a 4.5
     def extra(self):
-        self.set_font('helvetica', '', 12)
+        self.set_font( family = self.fuente, style = '', size= 12)
         self.cell(1, 5, '', border=False, ln=1, align="L")
         self.multi_cell(0, 8, 'En atención a que el Trabajo de Grado se distingue porque la calificación del trabajo es superior a 4,50 y se destaca por dos condiciones (que indicamos) de las siguientes tres como se estipula en el artículo 7.6 de las Directrices para Trabajo de Grado de Maestría:', border=False, align='L')
         self.cell(1, 5, '', border=False, ln=1, align="L")
@@ -158,9 +159,9 @@ class PDF(FPDF):
         self.multi_cell(0, 10, '__________________________________________________________________________________', border=False, align='L')
         self.firmas()
         self.cell(1, 15, '', border=False, ln=1, align="L")
-        self.set_font('helvetica', 'B', 12)
+        self.set_font( family = self.fuente, style = 'B', size = 12)
         self.cell(1, 10, 'Decisión del Consejo de la Facultad:', border=False, ln=1, align="L")
-        self.set_font('helvetica', '', 12)
+        self.set_font( family = self.fuente, style = '', size = 12)
         self.multi_cell(0, 8, 'En virtud de las condiciones que indicaron los Jurados y su motivación, el Consejo de la Facultad decidió losiguiente:', border=False, align='L')
         self.cell(1, 5, '', border=False, ln=1, align="L")
         self.cell(1, 10, '  ' + chr(157) + '          El tema ofrecía una dificultad superior a lo ordinario. ____', border=False, ln=1, align="L")

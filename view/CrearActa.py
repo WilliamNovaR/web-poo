@@ -3,6 +3,8 @@ from datetime import datetime
 import base64
 
 
+
+
 # esta funcion permite crear la opcion de descargar la acta creada
 def create_download_link(val, filename):
     b64 = base64.b64encode(val) #Codifica el objeto similar a bytes s utilizando Base64 y retorna los bytes codificados
@@ -12,6 +14,7 @@ def create_download_link(val, filename):
 def crearActa(st, actas_controller, controller):
     st.title("Crear acta")
     lista_nombres = [] # creamos un arreglo para almacenar todos los nombres de los estudiantes calificados para poner estos en el select box
+    fuente = 'Helvetica'
     for nombres in controller.evaluaciones:
         if len(nombres.calificacion) > 0 :
             lista_nombres.append(nombres.nombre_autor) #el ciclo recorre el arreglo que tiene todas las calificaciones y guarda en el arreglo los nombres calificados
@@ -22,6 +25,7 @@ def crearActa(st, actas_controller, controller):
     for nombre in controller.evaluaciones:
         if nombre.nombre_autor == seleccionar_estudiante_acta:
             acta = PDF('P', 'mm', 'Letter') #inicializa datos del pdf como la horientacion y el tamaño
+            acta.fuente = fuente
             acta.nombre_pdf = 'acta' + str(len(actas_controller.actas) + 1) + seleccionar_estudiante_acta + '.pdf'
             acta.nombre_pdf = st.text_input("Nombre con el que se guardara el pdf del acta", value=acta.nombre_pdf, key = key) #pregunta el nombre con el que se va a generar el archivo del acta
             if st.button("Crear acta", key = key * 123):
