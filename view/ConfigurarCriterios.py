@@ -1,6 +1,6 @@
 from model.Criterio import Criterio
 
-
+#funcion que crea el selector de opciones
 def seleccionar_opcion(st, criterios_controller):
     st.title("Criterios")
     opcion = st.radio("Tipo de trabajo", ('Listar', 'Agregar', 'Editar'))
@@ -11,7 +11,7 @@ def seleccionar_opcion(st, criterios_controller):
     elif opcion == 'Editar':
         editar_criterio(st, criterios_controller)
 
-
+#imprime todos los criterios y sus descripciones
 def listar_criterio(st, criterios_controller):
     st.subheader("Lista de criterios")
     for criterio in criterios_controller.criterios:
@@ -19,7 +19,7 @@ def listar_criterio(st, criterios_controller):
         st.write("Porcentaje ponderacion: " + str(criterio.porcentaje_ponderacion))
         st.write("Descripcion: " + criterio.descripcion)
 
-
+#funcion para agregar criterios
 def agregar_criterio(st, criterios_controller):
     st.subheader("Agregar criterio")
     criterio = Criterio("", "", 0)
@@ -31,13 +31,15 @@ def agregar_criterio(st, criterios_controller):
         st.success("Tarea exitosa")
     return criterios_controller
 
-
+#funcion para cambiar los valores de evaluacion de los criterios
 def editar_criterio(st, criterios_controller):
     st.subheader("Editar criterio")
     lista_criterios = []
+    #guarda los nombres de los criterios en el arreglo lista_criterios para que salga en la select box
     for i in criterios_controller.criterios:
         lista_criterios.append(i.identificador)
     seleccionar_criterio = st.selectbox("Escoger criterio", lista_criterios)
+    #busca el criterio seleccionado e imprime sus valores
     for criterios in criterios_controller.criterios:
         if seleccionar_criterio == criterios.identificador:
             criterios.identificador = st.text_input(" Digite el identificador del criterio ",
