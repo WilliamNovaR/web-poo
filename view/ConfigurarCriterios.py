@@ -3,13 +3,15 @@ from model.Criterio import Criterio
 #funcion que crea el selector de opciones
 def seleccionar_opcion(st, criterios_controller):
     st.title("Criterios")
-    opcion = st.radio("Tipo de trabajo", ('Listar', 'Agregar', 'Editar'))
+    opcion = st.radio("Tipo de trabajo", ('Listar', 'Agregar', 'Editar', 'Eliminar'))
     if opcion == 'Listar':
         listar_criterio(st, criterios_controller)
     elif opcion == 'Agregar':
         agregar_criterio(st, criterios_controller)
     elif opcion == 'Editar':
         editar_criterio(st, criterios_controller)
+    elif opcion == 'Eliminar':
+        eliminar_criterio(st, criterios_controller)
 
 #imprime todos los criterios y sus descripciones
 def listar_criterio(st, criterios_controller):
@@ -50,3 +52,21 @@ def editar_criterio(st, criterios_controller):
                                                                value=criterios.porcentaje_ponderacion)
             if st.button("Editar"):
                 st.success("Edicion exitosa")
+
+def eliminar_criterio(st, criterios_controller):
+    lista_criterios = []
+    index = 0 #en esta variable se guarda el index del criterio que vamos a eliminar
+    # guarda los nombres de los criterios en el arreglo lista_criterios para que salga en la select box
+    for i in criterios_controller.criterios:
+        lista_criterios.append(i.identificador)
+    seleccionar_criterio = st.selectbox("Escoger criterio", lista_criterios)
+    # busca el criterio seleccionado e imprime sus valores
+    for criterios in criterios_controller.criterios:
+        if seleccionar_criterio == criterios.identificador:
+            st.write( "Quieres eliminar el criterio " + seleccionar_criterio + "?" )
+            eliminar = st.button( "Eliminar" )
+            if eliminar:
+                criterios_controller.criterios.pop( index )#elimina el criterio
+                st.success( "Elemento Eliminado" )
+        index += 1
+
