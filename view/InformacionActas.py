@@ -1,5 +1,8 @@
+
+#permite ver un resumen de las actas
 def listar_actas(st, criterios_controller, acta_controller):
     st.title("Informacion resumen de acta")
+    # se usan los arreglos para guardar los nombres y mostrarlos luego en un selecte box
     actas_nombres = []
     criterios = []
     for acta in acta_controller.actas:
@@ -7,6 +10,7 @@ def listar_actas(st, criterios_controller, acta_controller):
     for criterio in criterios_controller.criterios:
         criterios.append(criterio.identificador)
     seleccionar_acta = st.selectbox("seleccioanr estudiante", actas_nombres)
+    #imprime los datos de las actas resumidos
     for pdf in acta_controller.actas:
         if seleccionar_acta == pdf.nombre_pdf:
             st.subheader("Numero de acta: " + pdf.num_acta)

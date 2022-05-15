@@ -41,7 +41,7 @@ class MainView:
     def _dibujar_layout(self):
         img = Image.open(
             "C:\\Users\\willi\\Downloads\\streamlit_example_app-main\\streamlit_example_app-main\\view"
-            "\\puj_logo_vertical_azul_copia.png")
+            "\\puj_logo_vertical_azul_copia.png") #carla la imagen del icono de la pagina
         # Set page title, icon, layout wide (more used space in central area) and sidebar initial state
         st.set_page_config(page_title="Calificar trabajos finales", page_icon=img, layout="wide",
                            initial_sidebar_state="expanded")
