@@ -1,11 +1,10 @@
 import streamlit as st
 from PIL import Image
-from streamlit import config
 from streamlit_option_menu import option_menu
 from controller.EvalController import EvaluadorController
 from controller.CriterioController import CriterioController
 from controller.ActaController import ActaController
-from view.AboutPartial import consultar_instrucciones
+from view.Home import consultar_instrucciones
 from view.Evaluar import seleccion, agregar_evaluacion
 from view.ConfigurarCriterios import seleccionar_opcion
 from view.CrearActa import crearActa
@@ -40,9 +39,7 @@ class MainView:
         self._dibujar_layout()
 
     def _dibujar_layout(self):
-        img = Image.open(
-            "C:\\Users\\willi\\Downloads\\streamlit_example_app-main\\streamlit_example_app-main\\view"
-            "\\puj_logo_vertical_azul_copia.png") #carla la imagen del icono de la pagina
+        img = Image.open("C:\\Users\\willi\\OneDrive\\Escritorio\\imagenes\\puj_logo_vertical_azul_copia.png") #carla la imagen del icono de la pagina
         # Set page title, icon, layout wide (more used space in central area) and sidebar initial state
         st.set_page_config(page_title="Calificar trabajos finales", page_icon=img, layout="wide",
                            initial_sidebar_state="expanded")
@@ -53,16 +50,15 @@ class MainView:
         # Define lo que abrá en la barra de menu
         with st.sidebar:
             self.menu_actual = option_menu("Menu",
-                                           ["About", 'Inicilizar datos actas', 'Criterios', 'Evaluar nuevo trabajo',
+                                           ["Home", 'Inicilizar datos actas', 'Criterios', 'Evaluar nuevo trabajo',
                                             'Calificaciones', 'Acta', 'Resumen actas', 'Estadisticas'],
                                            icons=['house', 'upload', 'list-check', 'clipboard', 'clipboard-check',
                                                   'file-pdf', 'book', 'file-bar-graph'], menu_icon="cast",
-                                           default_index=1)
+                                           default_index=0)
 
     def controlar_menu(self):
-        if self.menu_actual == "About":
-            texto = consultar_instrucciones()
-            st.write(texto)
+        if self.menu_actual == "Home":
+            consultar_instrucciones( st )
         elif self.menu_actual == "Inicilizar datos actas":
             agregar_datos(st, self.controller)
         elif self.menu_actual == "Criterios":
