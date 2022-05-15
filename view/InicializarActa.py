@@ -22,7 +22,6 @@ def agregar_datos(st, controller):
     evaluacion_obj.tipo_trabajo = st.radio("Tipo de trabajo", ('Aplicado', 'Investigacion'))
     evaluacion_obj.nombre_trabajo = st.text_input("Nombre del trabajo")
     evaluacion_obj.nombre_director = st.text_input("Nombre del director")
-    st.write("El trabajo tiene codirector?")
     coodirector = st.radio("El trabajo tiene codirector?", ('Si', 'No'))
     if coodirector == 'Si':#pregunta si tiene codirector para preguntar el nombre o no
         evaluacion_obj.nombre_codirector = st.text_input("Nombre del codirector")

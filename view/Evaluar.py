@@ -7,6 +7,8 @@ def agregar_evaluacion(st, controller, criterios_controller):
     nota_maxima = 5.0
     nota_minima = 0.0
     lista_nombres = []
+    if len(controller.evaluaciones) < 1:
+        st.error( "No hay estudiantes inicializados para calificar" )
     #este ciclo permite no calificar dos veces a la misma persona
     for nombres in controller.evaluaciones:
         lista_nombres.append(nombres.nombre_autor)
@@ -74,6 +76,8 @@ def seleccion( st, controller, criterios_controller ):
     for criterio in criterios_controller.criterios:
         criterios.append(criterio.identificador)
     seleccionar_estudiantes = st.selectbox( "Escoge un estudiante:", estudiantes_nombres )
+    if( len(estudiantes_nombres) < 1 ):
+        st.error( "No hay estudiantes calificados" )
     if ver_editar == 'Ver':
         listar_evaluacion(st, controller, criterios, seleccionar_estudiantes)
     else:
@@ -151,7 +155,7 @@ def editar_calificacion(st, controller, criterios, seleccionar_estudiantes):
             if evaluacion.nota >= 4.5: #mira si debe desplegar la opcion de los trabjos con nota mayor a 4.5
                 evaluacion.recomendacion = st.text_input("Recomendación y apreciaciones: ",
                                                                      value=evaluacion.recomendacion)
-        enviar_btn = st.button("Editar")
+        enviar_btn = st.button("Editar", key = 2* 89)
         if enviar_btn:
             evaluacion.nota = round(evaluacion.nota, 1)
             st.success("Cambio realizado")

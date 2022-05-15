@@ -19,6 +19,8 @@ def crearActa(st, actas_controller, controller):
         if len(nombres.calificacion) > 0 :
             lista_nombres.append(nombres.nombre_autor) #el ciclo recorre el arreglo que tiene todas las calificaciones y guarda en el arreglo los nombres calificados
     seleccionar_estudiante_acta = st.selectbox("a que estudiante le quieres hacer el acta?", lista_nombres)
+    if len( lista_nombres ) < 1:
+        st.error( "No se ha calificado a ningun estudiante" )
     indice_estudiante = 0 #esta variable nos sirve para saber el indice del estudiante en el arreglo de la clase Evalcontroller
     key = 7 #esta key nos permite imprimir repetodos st.inputs mediante un for ya que si no nos da error
     #encuentra al estudiante al cual se le va a generar el acta
