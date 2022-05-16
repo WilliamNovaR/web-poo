@@ -16,9 +16,9 @@ def consultar_instrucciones(st):
     st.write("Programa de la Universidad Javeriana Cali realizado para la evaluación de proyectos de grado de posgrado,"
              " creación y descargar de las actas de calificacion")
     st.write( "Dependiendo de tu rol tenemos diferentes acciones para ti:" )
-    st.write(" * Asistente -> Creación del Acta de Evaluación y ver actas creadas ")
-    st.write(" * Jurado -> Calificar, Exportar acta, editar calificacion y ver calificaciones realizadas ")
-    st.write(" * Director/a -> Modificar los criterios de calificacion y ver las actas creadas")
+    st.write(" * Asistente -> Inicializar Acta de Evaluación, ver actas creadas y estadisticas de notas ")
+    st.write(" * Jurado -> Calificar, Exportar acta, editar calificacion y ver calificaciones realizadas y estadisticas de notas ")
+    st.write(" * Director/a -> Modificar los criterios de calificacion y ver las actas creadas y estadisticas de notas")
     st.image( img2, caption='Software made by William Nova' )
 
 
