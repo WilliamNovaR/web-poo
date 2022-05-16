@@ -13,8 +13,8 @@ def crear_cuenta(st, cuentaController):
         print( len( cuentaController.cuentas ) )
 
 def iniciar_sesion( st, cuentasController, accionesController):
-    usuario = st.text_input( "Usuario:", value = '' )
-    contrasena = st.text_input( "Contraseña:", value = '' )
+    usuario = st.text_input( "Usuario:", key = 23 )
+    contrasena = st.text_input( "Contraseña:", key = 7 )
     col1, col2 = st.columns([0.2,1])
     with col1:
         login = st.button( "Iniciar sesion" )
