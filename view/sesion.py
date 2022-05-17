@@ -14,7 +14,7 @@ def cargar( cuentaController ):
     with open('data_cuentas.json', 'w') as outfile:
         json.dump(lista, outfile)
 
-def crear_cuenta(st, cuentaController, data):
+def crear_cuenta(st, cuentaController):
     nueva_cuenta = Cuenta()
     nueva_cuenta.usuario = st.text_input( "Usuario:", value = '' )
     nueva_cuenta.contrasena = st.text_input( "Contraseña:", value= ''  )

@@ -1,4 +1,16 @@
 from model.Criterio import Criterio
+import json
+
+def cargar( criterios_controller ):
+    lista = []
+    for i in criterios_controller.criterios:
+        diccionario = {'identificador': '', 'descripcion': '', 'porcentaje_ponderacion': ''}
+        diccionario['identificador'] = i.identificador
+        diccionario['descripcion'] = i.descripcion
+        diccionario['porcentaje_ponderacion'] = i.porcentaje_ponderacion
+        lista.append(diccionario)
+    with open('data_criterios.json', 'w') as outfile:
+        json.dump(lista, outfile)
 
 #funcion que crea el selector de opciones
 def seleccionar_opcion(st, criterios_controller):
@@ -31,10 +43,13 @@ def agregar_criterio(st, criterios_controller):
     if st.button("Enviar"):
         criterios_controller.agregar_criterios(criterio)
         st.success("Tarea exitosa")
+        cargar( criterios_controller )
     return criterios_controller
 
 #funcion para cambiar los valores de evaluacion de los criterios
 def editar_criterio(st, criterios_controller):
+    menor_valor = 0
+    maximo_valor = 1
     st.subheader("Editar criterio")
     lista_criterios = []
     #guarda los nombres de los criterios en el arreglo lista_criterios para que salga en la select box
@@ -43,14 +58,17 @@ def editar_criterio(st, criterios_controller):
     seleccionar_criterio = st.selectbox("Escoger criterio", lista_criterios)
     #busca el criterio seleccionado e imprime sus valores
     for criterios in criterios_controller.criterios:
+        contador = 1
         if seleccionar_criterio == criterios.identificador:
             criterios.identificador = st.text_input(" Digite el identificador del criterio ",
                                                     value=criterios.identificador)
             criterios.descripcion = st.text_input(" Digite una descripcion para el criterio",
                                                   value=criterios.descripcion)
             criterios.porcentaje_ponderacion = st.number_input('agregue el porcentaje ponderado del criterio',
-                                                               value=criterios.porcentaje_ponderacion)
+                                                               value=criterios.porcentaje_ponderacion )
+            contador +=1
             if st.button("Editar"):
+                cargar(criterios_controller)
                 st.success("Edicion exitosa")
 
 #Elimina el criterio seleccionado
@@ -68,6 +86,7 @@ def eliminar_criterio(st, criterios_controller):
             eliminar = st.button( "Eliminar" )
             if eliminar:
                 criterios_controller.criterios.pop( index )#elimina el criterio
+                cargar(criterios_controller)
                 st.success( "Elemento Eliminado" )
         index += 1
 

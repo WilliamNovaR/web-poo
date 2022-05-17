@@ -8,6 +8,7 @@ from controller.EvalController import EvaluadorController
 from controller.CriterioController import CriterioController
 from controller.ActaController import ActaController
 from model.Cuenta import Cuenta
+from model.Criterio import Criterio
 from view.Home import consultar_instrucciones
 from view.sesion import crear_cuenta, iniciar_sesion, cerrar_sesion
 from view.Evaluar import seleccion, agregar_evaluacion
@@ -62,6 +63,14 @@ class MainView:
                     cargar_cuenta.tipo = crear[ 'tipo' ]
                     lista.append( cargar_cuenta )
             self.cuentas_controller.cuentas = lista
+        if os.path.exists( 'data_criterios.json' ):
+            with open('data_criterios.json') as json_file:
+                data = json.load(json_file)
+                lista = []
+                for crear in data:
+                    cargar_cuenta = Criterio( crear['identificador'], crear[ 'descripcion' ], crear[ 'porcentaje_ponderacion' ] )
+                    lista.append( cargar_cuenta )
+            self.criterios_controller.criterios = lista
 
     def _dibujar_layout(self):
         img = Image.open("C:\\Users\\willi\\OneDrive\\Escritorio\\imagenes\\puj_logo_vertical_azul_copia.png") #carla la imagen del icono de la pagina
@@ -85,7 +94,7 @@ class MainView:
         if self.menu_actual == "Home":
             consultar_instrucciones( st )
         elif self.menu_actual == 'Crear cuenta':
-            crear_cuenta( st, self.cuentas_controller, self.data )
+            crear_cuenta( st, self.cuentas_controller )
         elif self.menu_actual == 'Iniciar sesion':
             iniciar_sesion( st, self.cuentas_controller, self.acciones )
         elif self.menu_actual == "Inicilizar datos actas":
