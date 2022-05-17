@@ -155,7 +155,7 @@ def editar_calificacion(st, controller, criterios, seleccionar_estudiantes):
             if evaluacion.nota >= 4.5: #mira si debe desplegar la opcion de los trabjos con nota mayor a 4.5
                 evaluacion.recomendacion = st.text_input("Recomendación y apreciaciones: ",
                                                                      value=evaluacion.recomendacion)
-        enviar_btn = st.button("Editar", key = 2* 89)
-        if enviar_btn:
-            evaluacion.nota = round(evaluacion.nota, 1)
-            st.success("Cambio realizado")
+    enviar_btn = st.button("Editar", key = 2 * 11 )
+    if enviar_btn:
+        evaluacion.nota = round(evaluacion.nota, 1)
+        st.success("Cambio realizado")

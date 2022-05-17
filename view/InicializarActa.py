@@ -38,6 +38,10 @@ def agregar_datos(st, controller):
     enviado_btn = st.button("Send")
 
     if enviado_btn:
+        for i in controller.evaluaciones:
+            if evaluacion_obj.id_estudiante == i.id_estudiante:
+                st.error( "Id repetida" )
+                return 
         controller.agregar_evaluacion(evaluacion_obj)
         st.success("Evaluacion agregada exitosamente")
     else:

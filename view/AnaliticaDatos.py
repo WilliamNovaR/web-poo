@@ -28,7 +28,6 @@ def mayor_calificacion(st, controller):
         st.subheader("El estudiante con mejor calificiacion es: " + mejor_calificacion.nombre_autor)
         st.subheader("Id:" + mejor_calificacion.id_estudiante)
         st.subheader("Trabajo:" + mejor_calificacion.nombre_trabajo)
-        st.subheader("Trabajo:" + mejor_calificacion.nombre_trabajo)
         st.subheader("Nota: " + str(round(mejor_calificacion.nota, 1)))
     else:
         st.error("No han calificado a nadie")

@@ -8,9 +8,12 @@ def crear_cuenta(st, cuentaController):
     nueva_cuenta.tipo = st.radio( "Que tipo de cuenta quieres crear?", ('Asistente', 'Jurado', 'Director/a') )
     crear = st.button( "Crear" )
     if crear:
+        for i in cuentaController.cuentas:
+            if nueva_cuenta.usuario == i.usuario:
+                st.error( "esta cuenta ya existe" )
+                return
         cuentaController.cuentas.append( nueva_cuenta )
         st.success( "Cuenta creada" )
-        print( len( cuentaController.cuentas ) )
 
 def iniciar_sesion( st, cuentasController, accionesController):
     usuario = st.text_input( "Usuario:", key = 23 )
