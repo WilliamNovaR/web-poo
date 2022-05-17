@@ -1,8 +1,41 @@
 from model.Acta import PDF
 from datetime import datetime
 import base64
+import json
 
-
+def cargar( actas_controller ):
+    lista = []
+    for i in actas_controller.actas:
+        diccionario = {'fuente': '', 'inicializar': '', 'nombre_pdf': '', 'fecha': '', 'num_acta': '', 'titulo': '', 'autor': '', 'id': '', 'periodo': '', 'director': '', 'codirector': '', 'enfasis': '', 'modalidad': '', 'jurado1': '', 'jurado2': '', 'num_criterio': '', 'nombre_criterio': '', 'ponderacion': '', 'calificacion': '', 'observacion': '', 'calificacion_final': '', 'unidad': '', 'decima': '', 'comentario_final': '', 'correcciones': '', 'recomendacion': '' }
+        diccionario['fuente'] = i.fuente
+        diccionario['inicializar'] = i.inicializar
+        diccionario['nombre_pdf'] = i.nombre_pdf
+        diccionario['fecha'] = i.fecha
+        diccionario['num_acta'] = i.num_acta
+        diccionario['titulo'] = i.titulo
+        diccionario['autor'] = i.autor
+        diccionario['id'] = i.id
+        diccionario['periodo'] = i.periodo
+        diccionario['director'] = i.director
+        diccionario['codirector'] = i.codirector
+        diccionario['enfasis'] = i.enfasis
+        diccionario['modalidad'] = i.modalidad
+        diccionario['jurado1'] = i.jurado1
+        diccionario['jurado2'] = i.jurado2
+        diccionario['num_criterio'] = i.num_criterio
+        diccionario['nombre_criterio'] = i.nombre_criterio
+        diccionario['ponderacion'] = i.ponderacion
+        diccionario['calificacion'] = i.calificacion
+        diccionario['observacion'] = i.observacion
+        diccionario['calificacion_final'] = i.calificacion_final
+        diccionario['unidad'] = i.unidad
+        diccionario['decima'] = i.decima
+        diccionario['comentario_final'] = i.comentario_final
+        diccionario['correcciones'] = i.correcciones
+        diccionario['recomendacion'] = i.recomendacion
+        lista.append(diccionario)
+    with open('data_actas.json', 'w') as outfile:
+        json.dump(lista, outfile)
 
 
 # esta funcion permite crear la opcion de descargar la acta creada
@@ -73,6 +106,7 @@ def crearActa(st, actas_controller, controller):
                 html = create_download_link(acta.output(dest="S").encode("latin-1"), acta.nombre_pdf)
                 actas_controller.actas.append(acta)
                 st.markdown(html, unsafe_allow_html=True)
+                cargar( actas_controller )
                 st.success("Acta Creada")
             key *= key + 4 #cambia la key para no generar errores
         indice_estudiante += 1

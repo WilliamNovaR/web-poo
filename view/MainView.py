@@ -9,6 +9,7 @@ from controller.CriterioController import CriterioController
 from controller.ActaController import ActaController
 from model.Cuenta import Cuenta
 from model.Criterio import Criterio
+from model.Acta import PDF
 from view.Home import consultar_instrucciones
 from view.sesion import crear_cuenta, iniciar_sesion, cerrar_sesion
 from view.Evaluar import seleccion, agregar_evaluacion
@@ -71,6 +72,40 @@ class MainView:
                     cargar_cuenta = Criterio( crear['identificador'], crear[ 'descripcion' ], crear[ 'porcentaje_ponderacion' ] )
                     lista.append( cargar_cuenta )
             self.criterios_controller.criterios = lista
+        if os.path.exists( 'data_actas.json' ):
+            with open('data_actas.json') as json_file:
+                data = json.load(json_file)
+                lista = []
+                for crear in data:
+                    cargar_acta = PDF('P', 'mm', 'Letter')
+                    cargar_acta.fuente = crear['fuente']
+                    cargar_acta.inicializar = crear['inicializar']
+                    cargar_acta.nombre_pdf = crear['nombre_pdf']
+                    cargar_acta.fecha = crear['fecha']
+                    cargar_acta.num_acta = crear['num_acta']
+                    cargar_acta.titulo = crear['titulo']
+                    cargar_acta.autor = crear['autor']
+                    cargar_acta.id = crear['id']
+                    cargar_acta.periodo = crear['periodo']
+                    cargar_acta.director = crear['director']
+                    cargar_acta.codirector = crear['codirector']
+                    cargar_acta.enfasis = crear['enfasis']
+                    cargar_acta.modalidad = crear['modalidad']
+                    cargar_acta.jurado1 = crear['jurado1']
+                    cargar_acta.jurado2 = crear['jurado2']
+                    cargar_acta.num_criterio = crear['num_criterio']
+                    cargar_acta.nombre_criterio = crear['nombre_criterio']
+                    cargar_acta.ponderacion = crear['ponderacion']
+                    cargar_acta.calificacion = crear['calificacion']
+                    cargar_acta.observacion = crear['observacion']
+                    cargar_acta.calificacion_final = crear['calificacion_final']
+                    cargar_acta.unidad = crear['unidad']
+                    cargar_acta.decima = crear['decima']
+                    cargar_acta.comentario_final = crear['comentario_final']
+                    cargar_acta.correcciones = crear['correcciones']
+                    cargar_acta.recomendacion = crear['recomendacion']
+                    lista.append( cargar_acta )
+            self.actas_controller.actas = lista
 
     def _dibujar_layout(self):
         img = Image.open("C:\\Users\\willi\\OneDrive\\Escritorio\\imagenes\\puj_logo_vertical_azul_copia.png") #carla la imagen del icono de la pagina
