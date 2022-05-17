@@ -1,7 +1,20 @@
 from model.Cuenta import Cuenta
+import json
 
 
-def crear_cuenta(st, cuentaController):
+def cargar( cuentaController ):
+
+    lista = []
+    for i in cuentaController.cuentas:
+        diccionario = {'usuario': '', 'contrasena': '', 'tipo': ''}
+        diccionario['usuario'] = i.usuario
+        diccionario['contrasena'] = i.contrasena
+        diccionario['tipo'] = i.tipo
+        lista.append(diccionario)
+    with open('data_cuentas.json', 'w') as outfile:
+        json.dump(lista, outfile)
+
+def crear_cuenta(st, cuentaController, data):
     nueva_cuenta = Cuenta()
     nueva_cuenta.usuario = st.text_input( "Usuario:", value = '' )
     nueva_cuenta.contrasena = st.text_input( "Contraseña:", value= ''  )
@@ -13,6 +26,7 @@ def crear_cuenta(st, cuentaController):
                 st.error( "esta cuenta ya existe" )
                 return
         cuentaController.cuentas.append( nueva_cuenta )
+        cargar( cuentaController )
         st.success( "Cuenta creada" )
 
 def iniciar_sesion( st, cuentasController, accionesController):

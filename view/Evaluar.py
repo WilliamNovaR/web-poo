@@ -10,9 +10,9 @@ def agregar_evaluacion(st, controller, criterios_controller):
     if len(controller.evaluaciones) < 1:
         st.error( "No hay estudiantes inicializados para calificar" )
     #este ciclo permite no calificar dos veces a la misma persona
-    for nombres in controller.evaluaciones:
-        lista_nombres.append(nombres.nombre_autor)
-        if len(nombres.calificacion):
+    for evaluaciones in controller.evaluaciones:
+        lista_nombres.append(evaluaciones.nombre_autor)
+        if len(evaluaciones.calificacion) > 0: #este if sirve para saber si si ya se califico un estudiante y no calificarlo dos veces
             lista_nombres.pop()
     seleccion_estudiante = st.selectbox("Calificar a:", lista_nombres)
     for evaluacion_obj in controller.evaluaciones:
