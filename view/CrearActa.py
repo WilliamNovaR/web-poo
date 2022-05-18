@@ -3,8 +3,11 @@ from datetime import datetime
 import base64
 import json
 
+#esta funcion sirve para cargar en un .json las actas y guardarlas para que no se borren cada vez que se ejecuta el programa
+
 def cargar( actas_controller ):
     lista = []
+    #convierte las actas en diccionarios para poder guardalas dentro de un .json
     for i in actas_controller.actas:
         diccionario = {'fuente': '', 'inicializar': '', 'nombre_pdf': '', 'fecha': '', 'num_acta': '', 'titulo': '', 'autor': '', 'id': '', 'periodo': '', 'director': '', 'codirector': '', 'enfasis': '', 'modalidad': '', 'jurado1': '', 'jurado2': '', 'num_criterio': '', 'nombre_criterio': '', 'ponderacion': '', 'calificacion': '', 'observacion': '', 'calificacion_final': '', 'unidad': '', 'decima': '', 'comentario_final': '', 'correcciones': '', 'recomendacion': '' }
         diccionario['fuente'] = i.fuente
@@ -34,6 +37,7 @@ def cargar( actas_controller ):
         diccionario['correcciones'] = i.correcciones
         diccionario['recomendacion'] = i.recomendacion
         lista.append(diccionario)
+    #carga la informacion dentro del .json
     with open('data_actas.json', 'w') as outfile:
         json.dump(lista, outfile)
 
