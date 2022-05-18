@@ -50,7 +50,7 @@ def agregar_evaluacion(st, controller, criterios_controller):
     #este ciclo sirve para buscar el estudiante a calificar y llenar sus datos
     for evaluacion_obj in controller.evaluaciones:
         if evaluacion_obj.nombre_autor == seleccion_estudiante:
-            lista_calificaciones = [] #se va a usar este arreglo para guardar la informacion """pendiente"""
+            lista_calificaciones = [] #se va a usar este arreglo para guardar la informacion y luego pasarlo al objeto ya que si se hace directamente del objeto causa errores debido a la constante actulizacion del streamlit
             criterios = []
             #iniciliza algunos datos de criterios de evaluacion
             for i in range(len(criterios_controller.criterios)):
@@ -70,25 +70,28 @@ def agregar_evaluacion(st, controller, criterios_controller):
                                                                        max_value=nota_maxima)
                 lista_calificaciones[j].nota_final = lista_calificaciones[j].establecer_nota_final(lista_calificaciones[j].nota_jurado1, lista_calificaciones[j].nota_jurado2, lista_calificaciones[j].numero_jurados )
                 lista_calificaciones[j].comentario = st.text_input("Comentario:", key=(j + 1) * 30, )
-                evaluacion_obj.nota = evaluacion_obj.establecer_nota(lista_calificaciones[j].nota_final, lista_calificaciones[j].ponderacion, evaluacion_obj.nota )
-            evaluacion_obj.nota = 0
+                evaluacion_obj.nota = evaluacion_obj.establecer_nota(lista_calificaciones[j].nota_final, lista_calificaciones[j].ponderacion, evaluacion_obj.nota ) # se calcula la nota
+            evaluacion_obj.nota = 0 ##revisaaaaa!!!!!!
             for j in range(len(lista_calificaciones)):
-                evaluacion_obj.nota = evaluacion_obj.establecer_nota(lista_calificaciones[j].nota_final, lista_calificaciones[j].ponderacion, evaluacion_obj.nota )
-            evaluacion_obj.nota = round(evaluacion_obj.nota, 1)
+                evaluacion_obj.nota = evaluacion_obj.establecer_nota(lista_calificaciones[j].nota_final, lista_calificaciones[j].ponderacion, evaluacion_obj.nota ) # se calcula la nota
+            evaluacion_obj.nota = round(evaluacion_obj.nota, 1) #redondea nota a una decima
+            #lee comentario final y las correciones
             evaluacion_obj.comentario_final = st.text_input("Comentario Final:")
             evaluacion_obj.correciones = st.text_input("Correciones: ")
+            #sirve para comrobar si el trabajo merece honorificos o no
             if evaluacion_obj.nota >= honorificos:
                 evaluacion_obj.recomendacion = st.text_input("Recomendación y apreciaciones:")
             st.subheader("Nota final: " + str(evaluacion_obj.nota))
+            #nos dice si el trabajo fue aprobado o no dependiendo de la nota final
             if evaluacion_obj.nota > aprovacion:
                 st.success("Aprobado")
             else:
                 st.error("Reprobado")
             enviado_btn = st.button("Send")
-            evaluacion_obj.nota = round(evaluacion_obj.nota, 1)
+            evaluacion_obj.nota = round(evaluacion_obj.nota, 1) #proxima la nota con un solo decimal
 
             if enviado_btn:
-                evaluacion_obj.calificacion = lista_calificaciones
+                evaluacion_obj.calificacion = lista_calificaciones #carga en el objeto las calificaciones
                 cargar(controller)
                 st.success("Evaluacion agregada exitosamente")
             else:
@@ -110,6 +113,7 @@ def seleccion( st, controller, criterios_controller ):
     for criterio in criterios_controller.criterios:
         criterios.append(criterio.identificador)
     seleccionar_estudiantes = st.selectbox( "Escoge un estudiante:", estudiantes_nombres )
+    #comprueba que hayan calificaciones subidas
     if( len(estudiantes_nombres) < 1 ):
         st.error( "No hay estudiantes calificados" )
     if ver_editar == 'Ver':
@@ -146,8 +150,9 @@ def listar_evaluacion(st, controller, criterios, seleccionar_estudiantes):
             #revisa si la nota fue mayor a 4.5 para desplegar la obcion de recomendaciones y apreciaciones
             if evaluacion.nota >= 4.5:
                 st.subheader("Recomendación y apreciaciones: " + evaluacion.recomendacion)
+
 def editar_calificacion(st, controller, criterios, seleccionar_estudiantes):
-    honorifico = 4.5
+    honorifico = 4.5 # carga la nota de honorifico
     #en caso de escoger la opcion editar permite cambiar los valores del estudiante y sus calificaciones
     for evaluacion in controller.evaluaciones:
         if seleccionar_estudiantes == evaluacion.nombre_autor:
