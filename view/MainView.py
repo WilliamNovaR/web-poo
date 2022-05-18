@@ -54,7 +54,7 @@ class MainView:
             self.criterios_controller = st.session_state.main_view.criterios_controller
             self.actas_controller = st.session_state.main_view.actas_controller
         self._dibujar_layout()
-        #comprueba que los archivos esten creados para cargar los datos guardados en los .son
+        #comprueba que los archivos esten creados para cargar los datos guardados en los .json y asi no se pierda la info
         if os.path.exists( 'data_cuentas.json' ):
             with open('data_cuentas.json') as json_file:
                 data = json.load(json_file)
