@@ -31,7 +31,7 @@ class PDF(FPDF):
     recomendacion = ''
     #funcion que crea el encabezado del pdf
     def header(self):
-        self.image( "C:\\Users\\willi\\Downloads\\streamlit_example_app-main\\streamlit_example_app-main\\model\\img.png", 10, 8, 33 )
+        self.image( "img.png", 10, 8, 33 )
         self.set_font(family= self.fuente, size= 20, style= 'B' )
         self.cell(0, 3, 'Facultad de ingenieria', border=False, ln=1, align= 'C' )
         self.cell(0, 15, 'Maestria en ingenieria', border=False, ln=1, align='C')

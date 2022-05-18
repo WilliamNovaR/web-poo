@@ -1,6 +1,31 @@
 from model.Calificacion import Calificacion
+import json
 
 """ Este archivo contine las funcionalidades de la vista relacionado con la evaluacion de los anteproyectos"""
+
+def cargar( controller ):
+    lista = []
+    for i in controller.evaluaciones:
+        diccionario = {'calificacion': [], 'id_estudiante': '', 'periodo': '', 'nombre_autor': '', 'nombre_trabajo': '', 'tipo_trabajo': '', 'nombre_director': '', 'nombre_codirector': '', 'enfasis': '', 'nombre_jurado1': '', 'nombre_jurado2': '', 'inicilizar': '', 'nota': '', 'comentario_final': '', 'correciones':'', 'recomendacion':''  }
+        diccionario['calificacion'] = i.guardar_calificaciones()
+        diccionario['id_estudiante'] = i.id_estudiante
+        diccionario['periodo'] = i.periodo
+        diccionario['nombre_autor'] = i.nombre_autor
+        diccionario['nombre_trabajo'] = i.nombre_trabajo
+        diccionario['tipo_trabajo'] = i.tipo_trabajo
+        diccionario['nombre_director'] = i.nombre_director
+        diccionario['nombre_codirector'] = i.nombre_codirector
+        diccionario['enfasis'] = i.enfasis
+        diccionario['nombre_jurado1'] = i.nombre_jurado1
+        diccionario['nombre_jurado2'] = i.nombre_jurado2
+        diccionario['inicilizar'] = i.inicilizar
+        diccionario['nota'] = i.nota
+        diccionario['comentario_final'] = i.comentario_final
+        diccionario['correciones'] = i.correciones
+        diccionario['recomendacion'] = i.recomendacion
+        lista.append(diccionario)
+    with open('data_calificaciones.json', 'w') as outfile:
+        json.dump(lista, outfile)
 
 #esta funcion permite califar a un estudiante previmente registrado
 def agregar_evaluacion(st, controller, criterios_controller):
@@ -25,16 +50,18 @@ def agregar_evaluacion(st, controller, criterios_controller):
                 lista_calificaciones[i].numero_jurados = 2
                 lista_calificaciones[i].id_criterio = criterios_controller.criterios[i].identificador
                 lista_calificaciones[i].ponderacion = criterios_controller.criterios[i].porcentaje_ponderacion
+            contador = 200
             for j in range(len(lista_calificaciones)):
                 st.subheader("Criterio " + lista_calificaciones[j].id_criterio)
-                lista_calificaciones[j].nota_jurado1 = st.number_input("Nota jurado 1:", key=(j + 1) * 10,
+                lista_calificaciones[j].nota_jurado1 = st.number_input("Nota jurado 1:", key= contador * 2,
                                                                        min_value=nota_minima, max_value=nota_maxima)
+                contador *= 7
                 lista_calificaciones[j].nota_jurado2 = st.number_input("Nota jurado 2:", key=j, min_value=nota_minima,
                                                                        max_value=nota_maxima)
                 lista_calificaciones[j].nota_final = round(
                     (lista_calificaciones[j].nota_jurado1 + lista_calificaciones[j].nota_jurado2) /
                     lista_calificaciones[j].numero_jurados, 2)
-                lista_calificaciones[j].comentario = st.text_input("Comentario:", key=(j + 1) * 20, )
+                lista_calificaciones[j].comentario = st.text_input("Comentario:", key=(j + 1) * 30, )
                 evaluacion_obj.nota = (lista_calificaciones[j].nota_final * lista_calificaciones[
                     j].ponderacion) + evaluacion_obj.nota
             evaluacion_obj.nota = 0
@@ -56,6 +83,7 @@ def agregar_evaluacion(st, controller, criterios_controller):
 
             if enviado_btn:
                 evaluacion_obj.calificacion = lista_calificaciones
+                cargar(controller)
                 st.success("Evaluacion agregada exitosamente")
             else:
                 st.error("Faltan criterios por calificar!")

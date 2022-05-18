@@ -10,6 +10,8 @@ from controller.ActaController import ActaController
 from model.Cuenta import Cuenta
 from model.Criterio import Criterio
 from model.Acta import PDF
+from model.Calificacion import Calificacion
+from model.EvalEstudiante import EvaluacionEstudiante
 from view.Home import consultar_instrucciones
 from view.sesion import crear_cuenta, iniciar_sesion, cerrar_sesion
 from view.Evaluar import seleccion, agregar_evaluacion
@@ -19,7 +21,6 @@ from view.InicializarActa import agregar_datos
 from view.InformacionActas import listar_actas
 from view.AnaliticaDatos import escoger_analis
 import json
-from collections import namedtuple
 import os.path
 
 
@@ -106,9 +107,48 @@ class MainView:
                     cargar_acta.recomendacion = crear['recomendacion']
                     lista.append( cargar_acta )
             self.actas_controller.actas = lista
+        if os.path.exists( 'data_calificaciones.json' ):
+            with open('data_calificaciones.json') as json_file:
+                data = json.load(json_file)
+                arreglo = []
+                for cargar in data:
+                    lista = []
+                    evaluaciones = EvaluacionEstudiante()
+                    for datos in cargar['calificacion']:
+                        calificacion = Calificacion()
+                        calificacion.numero_jurados = datos['numero_jurados']
+                        calificacion.id_criterio = datos['id_criterio']
+                        calificacion.ponderacion = datos['ponderacion']
+                        calificacion.nota_jurado1 = datos['nota_jurado1']
+                        calificacion.nota_jurado2 = datos['nota_jurado2']
+                        calificacion.nota_final = datos['nota_final']
+                        calificacion.comentario = datos['comentario']
+                        lista.append(calificacion)
+                    print(lista)
+                    evaluaciones.calificacion = lista
+                    evaluaciones.id_estudiante = cargar['id_estudiante']
+                    evaluaciones.periodo = cargar['periodo']
+                    evaluaciones.nombre_autor = cargar['nombre_autor']
+                    evaluaciones.nombre_trabajo = cargar['nombre_trabajo']
+                    evaluaciones.tipo_trabajo = cargar['tipo_trabajo']
+                    evaluaciones.nombre_director = cargar['nombre_director']
+                    evaluaciones.nombre_codirector = cargar['nombre_codirector']
+                    evaluaciones.enfasis = cargar['enfasis']
+                    evaluaciones.nombre_jurado1 = cargar['nombre_jurado1']
+                    evaluaciones.nombre_jurado2 = cargar['nombre_jurado2']
+                    evaluaciones.inicilizar = cargar['inicilizar']
+                    evaluaciones.nota = cargar['nota']
+                    evaluaciones.comentario_final = cargar['comentario_final']
+                    evaluaciones.correciones = cargar['correciones']
+                    evaluaciones.recomendacion = cargar['recomendacion']
+                    arreglo.append(evaluaciones)
+                self.controller.evaluaciones = arreglo
+
+
+
 
     def _dibujar_layout(self):
-        img = Image.open("C:\\Users\\willi\\OneDrive\\Escritorio\\imagenes\\puj_logo_vertical_azul_copia.png") #carla la imagen del icono de la pagina
+        img = Image.open("puj_logo_vertical_azul_copia.png") #carla la imagen del icono de la pagina
         # Set page title, icon, layout wide (more used space in central area) and sidebar initial state
         st.set_page_config(page_title="Calificar trabajos finales", page_icon=img, layout="wide",
                             initial_sidebar_state="expanded")

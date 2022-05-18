@@ -26,6 +26,9 @@ class EvaluacionEstudiante:
         self.recomendacion = ''
 
 
-    def __str__(self) -> str:
-        return json.dumps(self.__dict__)
+    def guardar_calificaciones(self):
+        lista = []
+        for calificaciones in self.calificacion:
+            lista.append(calificaciones.crear_dic())
+        return lista
 

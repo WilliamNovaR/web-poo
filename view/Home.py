@@ -3,8 +3,8 @@ from PIL import Image
 
 
 def consultar_instrucciones(st):
-    img = Image.open( "C:\\Users\\willi\\OneDrive\\Escritorio\\imagenes\\logo.png" )
-    img2 = Image.open( "C:\\Users\\willi\\OneDrive\\Escritorio\\imagenes\\PlazoletaJaverianaCali.jpg" )
+    img = Image.open( "logo.png" )
+    img2 = Image.open( "PlazoletaJaverianaCali.jpg" )
     col1, col2 = st.columns([1.1, 10])
 
     with col1:
