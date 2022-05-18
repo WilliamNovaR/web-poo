@@ -186,4 +186,5 @@ def editar_calificacion(st, controller, criterios, seleccionar_estudiantes):
     enviar_btn = st.button("Editar", key = 2 * 11 )
     if enviar_btn:
         evaluacion.nota = round(evaluacion.nota, 1)
+        cargar(controller)
         st.success("Cambio realizado")
