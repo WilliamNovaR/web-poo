@@ -15,7 +15,7 @@ def escoger_analis(st, controller, criterio_controler):
     elif opcion == 'Estadistica criterios':
         grifica_criterios(st, controller, criterio_controler, notas, nombres)
 
-
+#esta funcion busca al estudiante con mayor nota e imprime los datos
 def mayor_calificacion(st, controller):
     #primero se revisa que se hayan calificado estudiantes de lo contrario hay mensaje de error
     if len(controller.evaluaciones) > 0:
@@ -32,6 +32,7 @@ def mayor_calificacion(st, controller):
     else:
         st.error("No han calificado a nadie")
 
+#esta funcion grafica las notas finales de todos los estudiantes calificados
 def grafica_notas( st, controller, notas, nombres ):
     for i in controller.evaluaciones:
         #revisa que los nombres que se van a agregar a la grafica ya esten calificados y no solo inicilizados
