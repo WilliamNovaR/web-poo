@@ -76,10 +76,12 @@ def agregar_evaluacion(st, controller, criterios_controller):
                 evaluacion_obj.nota = evaluacion_obj.establecer_nota(lista_calificaciones[j].nota_final, lista_calificaciones[j].ponderacion, evaluacion_obj.nota ) # se calcula la nota
             evaluacion_obj.nota = round(evaluacion_obj.nota, 1) #redondea nota a una decima
             #lee comentario final y las correciones
+            st.subheader( "Datos Finales" )
             evaluacion_obj.comentario_final = st.text_input("Comentario Final:")
             evaluacion_obj.correciones = st.text_input("Correciones: ")
             #sirve para comrobar si el trabajo merece honorificos o no
             if evaluacion_obj.nota >= honorificos:
+                st.subheader( "Recomendaciones honorificos" )
                 evaluacion_obj.recomendacion = st.text_input("Recomendación y apreciaciones:")
             st.subheader("Nota final: " + str(evaluacion_obj.nota))
             #nos dice si el trabajo fue aprobado o no dependiendo de la nota final
@@ -190,8 +192,10 @@ def editar_calificacion(st, controller, criterios, seleccionar_estudiantes):
                     i.comentario = st.text_input("Comentario ", value=i.comentario)
                     i.nota_final = i.editar_nota_final( i.nota_jurado1, i.nota_jurado2, i.numero_jurados )
                     evaluacion.nota = evaluacion.editar_nota(evaluacion.nota, i.nota_final, i.ponderacion) # se agrega la nueva nota
+            st.subheader( "Datos finales" )
             evaluacion.comentario_final = st.text_input("Comentario final", value=evaluacion.comentario_final)
             if evaluacion.nota >= honorifico: #mira si debe desplegar la opcion de los trabjos con nota mayor a 4.5
+                st.subheader( "Recomendaciones honorificos" )
                 evaluacion.recomendacion = st.text_input("Recomendación y apreciaciones: ",
                                                                      value=evaluacion.recomendacion)
     enviar_btn = st.button("Editar", key = 2 * 11 )
