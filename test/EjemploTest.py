@@ -43,7 +43,7 @@ class ExampleTest(unittest.TestCase):
     def test_editar_nota_final1_incorrecto(self):
         prueba = Calificacion()
         nota = prueba.editar_nota_final(4, 5, 2)
-        self.assertFalse(10 == nota)
+        self.assertFalse(1 == nota)
 
 
 
