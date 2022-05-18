@@ -3,8 +3,10 @@ import json
 
 """ Este archivo contine las funcionalidades de la vista relacionado con la evaluacion de los anteproyectos"""
 
+#esta funcion sirve para guardar las evaluaciones en un .json para que cada vez que se cierra y abre el programa se guarden los parametros
 def cargar( controller ):
     lista = []
+    #se transforma a los objetos en diccionarios para poder cargarlos en el .json
     for i in controller.evaluaciones:
         diccionario = {'calificacion': [], 'id_estudiante': '', 'periodo': '', 'nombre_autor': '', 'nombre_trabajo': '', 'tipo_trabajo': '', 'nombre_director': '', 'nombre_codirector': '', 'enfasis': '', 'nombre_jurado1': '', 'nombre_jurado2': '', 'inicilizar': '', 'nota': '', 'comentario_final': '', 'correciones':'', 'recomendacion':''  }
         diccionario['calificacion'] = i.guardar_calificaciones()
@@ -24,14 +26,19 @@ def cargar( controller ):
         diccionario['correciones'] = i.correciones
         diccionario['recomendacion'] = i.recomendacion
         lista.append(diccionario)
+    #se guarda en el .json
     with open('data_calificaciones.json', 'w') as outfile:
         json.dump(lista, outfile)
 
 #esta funcion permite califar a un estudiante previmente registrado
 def agregar_evaluacion(st, controller, criterios_controller):
+    #establecen la calificacion maxima, minima, calificacion para ganar honorificos y calificacion de aprovacion
     nota_maxima = 5.0
     nota_minima = 0.0
+    honorificos = 4.5
+    aprovacion = 3.5
     lista_nombres = []
+    #comprueba que hayan actas iniciadas para calificar
     if len(controller.evaluaciones) < 1:
         st.error( "No hay estudiantes inicializados para calificar" )
     #este ciclo permite no calificar dos veces a la misma persona
@@ -40,10 +47,12 @@ def agregar_evaluacion(st, controller, criterios_controller):
         if len(evaluaciones.calificacion) > 0: #este if sirve para saber si si ya se califico un estudiante y no calificarlo dos veces
             lista_nombres.pop()
     seleccion_estudiante = st.selectbox("Calificar a:", lista_nombres)
+    #este ciclo sirve para buscar el estudiante a calificar y llenar sus datos
     for evaluacion_obj in controller.evaluaciones:
         if evaluacion_obj.nombre_autor == seleccion_estudiante:
             lista_calificaciones = [] #se va a usar este arreglo para guardar la informacion """pendiente"""
             criterios = []
+            #iniciliza algunos datos de criterios de evaluacion
             for i in range(len(criterios_controller.criterios)):
                 criterios.append(criterios_controller.criterios[i].identificador)
                 lista_calificaciones.append(Calificacion())
@@ -51,6 +60,7 @@ def agregar_evaluacion(st, controller, criterios_controller):
                 lista_calificaciones[i].id_criterio = criterios_controller.criterios[i].identificador
                 lista_calificaciones[i].ponderacion = criterios_controller.criterios[i].porcentaje_ponderacion
             contador = 200
+            #lee los datos de calificacion de los criterios
             for j in range(len(lista_calificaciones)):
                 st.subheader("Criterio " + lista_calificaciones[j].id_criterio)
                 lista_calificaciones[j].nota_jurado1 = st.number_input("Nota jurado 1:", key= contador * 2,
@@ -58,23 +68,19 @@ def agregar_evaluacion(st, controller, criterios_controller):
                 contador *= 7
                 lista_calificaciones[j].nota_jurado2 = st.number_input("Nota jurado 2:", key=j, min_value=nota_minima,
                                                                        max_value=nota_maxima)
-                lista_calificaciones[j].nota_final = round(
-                    (lista_calificaciones[j].nota_jurado1 + lista_calificaciones[j].nota_jurado2) /
-                    lista_calificaciones[j].numero_jurados, 2)
+                lista_calificaciones[j].nota_final = lista_calificaciones[j].establecer_nota_final(lista_calificaciones[j].nota_jurado1, lista_calificaciones[j].nota_jurado2, lista_calificaciones[j].numero_jurados )
                 lista_calificaciones[j].comentario = st.text_input("Comentario:", key=(j + 1) * 30, )
-                evaluacion_obj.nota = (lista_calificaciones[j].nota_final * lista_calificaciones[
-                    j].ponderacion) + evaluacion_obj.nota
+                evaluacion_obj.nota = evaluacion_obj.establecer_nota(lista_calificaciones[j].nota_final, lista_calificaciones[j].ponderacion, evaluacion_obj.nota )
             evaluacion_obj.nota = 0
             for j in range(len(lista_calificaciones)):
-                evaluacion_obj.nota = (lista_calificaciones[j].nota_final * lista_calificaciones[
-                    j].ponderacion) + evaluacion_obj.nota
+                evaluacion_obj.nota = evaluacion_obj.establecer_nota(lista_calificaciones[j].nota_final, lista_calificaciones[j].ponderacion, evaluacion_obj.nota )
             evaluacion_obj.nota = round(evaluacion_obj.nota, 1)
             evaluacion_obj.comentario_final = st.text_input("Comentario Final:")
             evaluacion_obj.correciones = st.text_input("Correciones: ")
-            if evaluacion_obj.nota >= 4.5:
+            if evaluacion_obj.nota >= honorificos:
                 evaluacion_obj.recomendacion = st.text_input("Recomendación y apreciaciones:")
             st.subheader("Nota final: " + str(evaluacion_obj.nota))
-            if evaluacion_obj.nota > 3.5:
+            if evaluacion_obj.nota > aprovacion:
                 st.success("Aprobado")
             else:
                 st.error("Reprobado")
@@ -141,7 +147,7 @@ def listar_evaluacion(st, controller, criterios, seleccionar_estudiantes):
             if evaluacion.nota >= 4.5:
                 st.subheader("Recomendación y apreciaciones: " + evaluacion.recomendacion)
 def editar_calificacion(st, controller, criterios, seleccionar_estudiantes):
-
+    honorifico = 4.5
     #en caso de escoger la opcion editar permite cambiar los valores del estudiante y sus calificaciones
     for evaluacion in controller.evaluaciones:
         if seleccionar_estudiantes == evaluacion.nombre_autor:
@@ -172,15 +178,15 @@ def editar_calificacion(st, controller, criterios, seleccionar_estudiantes):
             seleccionar_criterio = st.selectbox("Escoger criterio", criterios) #crea select box para seleccionar criterio a esditar
             for i in evaluacion.calificacion:
                 if seleccionar_criterio == i.id_criterio: #busca el criterio a seleccionar
-                    evaluacion.nota -= (i.nota_final * i.ponderacion) #debido a que la info se actuliza constantemente para editar errores cada vez que se actualiza la nota se le resta la inicial para que esta no se sume con la nueva que van a poner
+                    evaluacion.nota = evaluacion.editar_nota1( evaluacion.nota, i.nota_final, i.ponderacion ) #debido a que la info se actuliza constantemente para editar errores cada vez que se actualiza la nota se le resta la inicial para que esta no se sume con la nueva que van a poner
                     #imprime mas datos de la calificacion y acta
                     i.nota_jurado1 = st.number_input("Nota jurado 1: ", value=i.nota_jurado1)
                     i.nota_jurado2 = st.number_input("Nota jurado 2: ", value=i.nota_jurado2)
                     i.comentario = st.text_input("Comentario ", value=i.comentario)
-                    i.nota_final = (i.nota_jurado1 + i.nota_jurado2) / i.numero_jurados
-                    evaluacion.nota += (i.nota_final * i.ponderacion) # se agrega la nueva nota
+                    i.nota_final = i.editar_nota_final( i.nota_jurado1, i.nota_jurado2, i.numero_jurados )
+                    evaluacion.nota = evaluacion.editar_nota(evaluacion.nota, i.nota_final, i.ponderacion) # se agrega la nueva nota
             evaluacion.comentario_final = st.text_input("Comentario final", value=evaluacion.comentario_final)
-            if evaluacion.nota >= 4.5: #mira si debe desplegar la opcion de los trabjos con nota mayor a 4.5
+            if evaluacion.nota >= honorifico: #mira si debe desplegar la opcion de los trabjos con nota mayor a 4.5
                 evaluacion.recomendacion = st.text_input("Recomendación y apreciaciones: ",
                                                                      value=evaluacion.recomendacion)
     enviar_btn = st.button("Editar", key = 2 * 11 )

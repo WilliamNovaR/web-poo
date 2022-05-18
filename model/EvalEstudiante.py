@@ -25,6 +25,14 @@ class EvaluacionEstudiante:
         self.correciones = ""
         self.recomendacion = ''
 
+    def establecer_nota(self, nota_final, ponderacion, nota ):
+        return (nota_final * ponderacion) + nota
+
+    def editar_nota(self, nota, nota_final, ponderacion):
+        return nota + (nota_final * ponderacion)
+
+    def editar_nota1(self, nota, nota_final, ponderacion):
+        return nota - (nota_final * ponderacion)
 
     def guardar_calificaciones(self):
         lista = []
