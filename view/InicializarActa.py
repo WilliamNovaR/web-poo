@@ -20,7 +20,8 @@ def agregar_datos(st, controller):
     #lee datos de inicializacion de acta
     evaluacion_obj.periodo = st.text_input("Periodo de evaluacion", value=evaluacion_obj.periodo)
     evaluacion_obj.nombre_autor = st.text_input("Nombre del autor")
-    evaluacion_obj.tipo_trabajo = st.radio("Tipo de trabajo", ('Aplicado', 'Investigacion'))
+    tipo = st.radio("Tipo de trabajo", ('Aplicado', 'Investigacion'))
+    evaluacion_obj.tipo_trabajo = tipo
     evaluacion_obj.nombre_trabajo = st.text_input("Nombre del trabajo")
     evaluacion_obj.nombre_director = st.text_input("Nombre del director")
     coodirector = st.radio("El trabajo tiene codirector?", ('Si', 'No'))
