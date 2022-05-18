@@ -97,7 +97,7 @@ def agregar_evaluacion(st, controller, criterios_controller):
                 cargar(controller)
                 st.success("Evaluacion agregada exitosamente")
             else:
-                st.error("Faltan criterios por calificar!")
+                st.error("Faltan criterios por calificar!!!")
 
     return controller
 
