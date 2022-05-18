@@ -1,4 +1,5 @@
 from model.EvalEstudiante import EvaluacionEstudiante
+from view.Evaluar import cargar
 from datetime import datetime
 
 
@@ -43,7 +44,8 @@ def agregar_datos(st, controller):
             if evaluacion_obj.id_estudiante == i.id_estudiante:
                 st.error( "Id repetida" )
                 return 
-        controller.agregar_evaluacion(evaluacion_obj)
+        controller.evaluaciones.append( evaluacion_obj )
+        cargar( controller )
         st.success("Evaluacion agregada exitosamente")
     else:
         st.error("Faltan criterios por calificar!")

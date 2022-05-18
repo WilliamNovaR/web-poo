@@ -125,7 +125,6 @@ class MainView:
                         calificacion.nota_final = datos['nota_final']
                         calificacion.comentario = datos['comentario']
                         lista.append(calificacion)
-                    print(lista)
                     evaluaciones.calificacion = lista
                     evaluaciones.id_estudiante = cargar['id_estudiante']
                     evaluaciones.periodo = cargar['periodo']
